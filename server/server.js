@@ -26,13 +26,4 @@ app.listen(3000, () => {
     console.log('Started app on port 3000');
 });
 
-
-// var newUser = new User({
-//     email: ' srshetty@hotmail.com       '
-// });
-
-// newUser.save().then((doc) => {
-//     console.log(JSON.stringify(doc, undefined, 2));
-// }, (e) => {
-//     console.log('Unable to save User', e);
-// });
+module.exports = { app };
