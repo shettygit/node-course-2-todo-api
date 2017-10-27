@@ -1,14 +1,17 @@
 const expect = require('expect');
 const request = require('supertest');
+const { ObjectId } = require('mongodb');
 
 const { app } = require('./../server'); // go one directory back from tests and add server.js
 const { Todo } = require('./../models/todo');
 const { User } = require('./../models/user');
 
 const todos = [{
-    text: 'Test todo 1'
+    _id: new ObjectId(),
+    text: 'Friday Test todo 1'
 }, {
-    text: 'Test todo 2'
+    _id: new ObjectId(),
+    text: 'Friday Test todo 2'
 }];
 
 //beforeEach called just before each it should method 
@@ -70,5 +73,34 @@ describe('GET /todos', () => {
                 expect(res.body.todos.length).toBe(2);
             })
             .end(done);
-    })
+    });
+});
+
+describe('GET /todos/:id', () => {
+    it('should fetch matching objectID', (done) => {
+        request(app)
+            .get(`/todos/${todos[0]._id.toHexString()}`)
+            .expect(200)
+            .expect((res) => {
+                expect(res.body.todo.text).toBe(todos[0].text);
+            })
+            .end(done);
+    });
+
+    it('should return 404 if todo not found', (done) => {
+        request(app)
+            .get(`/todo/${new ObjectId().toHexString}`)
+            .expect(404)
+            .end(done);
+    });
+
+    it('should return 404 for non ObjectId', (done) => {
+        request(app)
+            .get('/todo/123')
+            .expect(404)
+            .end(done);
+    });
+
+
+
 });
