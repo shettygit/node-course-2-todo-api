@@ -14,7 +14,7 @@ const todos = [{
     text: 'Friday Test todo 2'
 }];
 
-//beforeEach called just before each it should method 
+//beforeEach called just before each it should method
 beforeEach((done) => {
     Todo.remove({}).then(() => {
         Todo.insertMany(todos);
